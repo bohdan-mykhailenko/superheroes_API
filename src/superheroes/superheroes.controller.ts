@@ -9,8 +9,8 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Superhero } from 'src/models/superhero';
-import { SuperheroesService } from 'src/services/superheroes.service';
+import { Superhero } from 'src/superheroes/models/superhero.model';
+import { SuperheroesService } from 'src/superheroes/superheroes.service';
 
 @Controller('superheroes')
 export class SuperheroesController {

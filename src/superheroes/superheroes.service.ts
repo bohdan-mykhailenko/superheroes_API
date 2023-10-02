@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Superhero } from 'src/models/superhero';
+import { Superhero } from 'src/superheroes/models/superhero.model';
 
 @Injectable()
 export class SuperheroesService {
@@ -22,7 +22,7 @@ export class SuperheroesService {
       console.log(images);
       const parsedSuperheroData: Partial<Superhero> = {
         ...superheroData,
-        images: images.map((file) => file.originalname),
+        images: images.map((file) => file.filename),
       };
 
       const superhero = await this.superheroModel.create(parsedSuperheroData);

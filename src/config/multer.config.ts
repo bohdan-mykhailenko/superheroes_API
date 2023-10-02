@@ -1,13 +1,14 @@
 import { diskStorage } from 'multer';
-import { generateId } from 'src/helpers/generateFileName';
+import * as path from 'path';
+import { v4 as uuidv4 } from 'uuid';
 
 export const multerOptions = {
   storage: diskStorage({
-    destination: './public/images/superheroes',
+    destination: path.join('public', 'images', 'superheroes'),
     filename: (req, file, callback) => {
-      const uniqueSuffix = generateId(10);
+      const uniqueSuffix = uuidv4();
 
-      callback(null, `${uniqueSuffix}-${file.originalname}`);
+      callback(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
     },
   }),
 };
