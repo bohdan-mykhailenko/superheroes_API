@@ -1,8 +1,6 @@
 import { Table, Column, Model } from 'sequelize-typescript';
 
-@Table({
-  timestamps: false,
-})
+@Table({ tableName: 'Superheroes', timestamps: false })
 export class Superhero extends Model<Superhero> {
   @Column
   nickname: string;
