@@ -4,11 +4,13 @@ import { SuperheroesModule } from './superheroes/superheroes.module';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { SequelizeModule } from '@nestjs/sequelize';
-import * as path from 'path';
+import { CorsModule } from '@nestjs/platform-express';
 import { databaseConfig } from './config/database.config';
+import * as path from 'path';
 
 @Module({
   imports: [
+    CorsModule,
     SequelizeModule.forRoot(databaseConfig),
     SuperheroesModule,
     ServeStaticModule.forRoot({
