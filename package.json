@@ -19,8 +19,9 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "husky install",
-    "migrate": "sequelize db:migrate",
-    "drop": "sequelize db:migrate:undo"
+    "migrate": "npx sequelize-cli db:migrate",
+    "drop": "npx sequelize-cli db:migrate:undo",
+    "seed": "npx sequelize-cli db:seed:all"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -28,6 +29,8 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/sequelize": "^10.0.0",
     "@nestjs/serve-static": "^4.0.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.0",
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
