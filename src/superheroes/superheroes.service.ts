@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Superhero } from 'src/superheroes/models/superhero.model';
 import { CreateSuperheroDto } from './dto/create-superhero.dto';
 import { UpdateSuperheroDto } from './dto/update-superhero.dto';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class SuperheroesService {
@@ -50,6 +52,7 @@ export class SuperheroesService {
   async update(
     id: number,
     superheroData: UpdateSuperheroDto,
+    images: Express.Multer.File[],
   ): Promise<Superhero | null> {
     try {
       const superhero = await this.superheroModel.findByPk(id);
@@ -57,13 +60,18 @@ export class SuperheroesService {
       if (!superhero) {
         return null;
       }
-      console.log('Before Update:', superhero);
 
-      Object.assign(superhero, superheroData);
+      const transformedSuperheroData: Partial<Superhero> = {
+        ...superheroData,
+        images: images.map((file) => file.filename),
+      };
+
+      this.deleteImages(superhero.images);
+
+      Object.assign(superhero, transformedSuperheroData);
 
       await superhero.save();
 
-      console.log('After Update:', superhero);
       return superhero;
     } catch (error) {
       throw new NotFoundException('Failed to update superhero');
@@ -78,11 +86,33 @@ export class SuperheroesService {
         return null;
       }
 
+      this.deleteImages(superhero.images);
+
       await superhero.destroy();
 
       return superhero;
     } catch (error) {
       throw new NotFoundException('Failed to delete superhero');
+    }
+  }
+
+  private deleteImages(images: string[]) {
+    for (const imagePath of images) {
+      const fullPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'public',
+        'images',
+        'superheroes',
+        imagePath,
+      );
+
+      try {
+        fs.unlinkSync(fullPath);
+      } catch (error) {
+        console.error(`Failed to delete image: ${fullPath}`, error);
+      }
     }
   }
 }

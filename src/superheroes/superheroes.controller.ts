@@ -48,7 +48,7 @@ export class SuperheroesController {
 
   @Post()
   @UseInterceptors(FileFieldsInterceptor([{ name: 'images', maxCount: 10 }]))
-  async createSuperhero(
+  async create(
     @UploadedFiles() files: { images: Express.Multer.File[] },
     @Body() superheroData: CreateSuperheroDto,
   ) {
@@ -69,14 +69,17 @@ export class SuperheroesController {
   }
 
   @Patch(':id')
+  @UseInterceptors(FileFieldsInterceptor([{ name: 'images', maxCount: 10 }]))
   async updateSuperhero(
     @Param('id') id: string,
     @Body() superheroData: UpdateSuperheroDto,
+    @UploadedFiles() files: { images: Express.Multer.File[] },
   ) {
     try {
       const updatedSuperhero = await this.superheroesService.update(
         Number(id),
         superheroData,
+        files.images,
       );
 
       if (!updatedSuperhero) {
@@ -91,7 +94,7 @@ export class SuperheroesController {
   }
 
   @Delete(':id')
-  async deleteSuperhero(@Param('id') id: string) {
+  async delete(@Param('id') id: string) {
     try {
       const deletedSuperhero = await this.superheroesService.delete(+id);
 
