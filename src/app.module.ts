@@ -1,11 +1,11 @@
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { databaseConfig } from './config/database.config';
 import { SuperheroesModule } from './superheroes/superheroes.module';
 import { Module } from '@nestjs/common';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { SequelizeModule } from '@nestjs/sequelize';
 import * as path from 'path';
+import { databaseConfig } from './config/database.config';
 
 @Module({
   imports: [

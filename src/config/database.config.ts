@@ -8,11 +8,11 @@ const db = {
 };
 
 export const databaseConfig: SequelizeModuleOptions = {
-  dialect: 'postgres',
   host: db.DB_HOST || process.env.DB_HOST,
   username: db.DB_USERNAME || process.env.DB_USERNAME,
   password: db.DB_PASSWORD || process.env.DB_PASSWORD,
   database: db.DB_NAME || process.env.DB_NAME,
+  dialect: 'postgres',
   dialectOptions: {
     ssl: true,
   },
