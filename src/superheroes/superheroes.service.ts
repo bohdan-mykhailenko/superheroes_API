@@ -52,7 +52,7 @@ export class SuperheroesService {
   async update(
     id: number,
     superheroData: UpdateSuperheroDto,
-    images: Express.Multer.File[],
+    images: Express.Multer.File[] | null,
   ): Promise<Superhero | null> {
     try {
       const superhero = await this.superheroModel.findByPk(id);
@@ -63,8 +63,12 @@ export class SuperheroesService {
 
       const transformedSuperheroData: Partial<Superhero> = {
         ...superheroData,
-        images: images.map((file) => file.filename),
       };
+
+      if (images) {
+        this.deleteImages(superhero.images);
+        transformedSuperheroData.images = images.map((file) => file.filename);
+      }
 
       this.deleteImages(superhero.images);
 
@@ -74,6 +78,7 @@ export class SuperheroesService {
 
       return superhero;
     } catch (error) {
+      console.log(error);
       throw new NotFoundException('Failed to update superhero');
     }
   }
