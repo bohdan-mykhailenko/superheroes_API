@@ -10,6 +10,7 @@ import {
   NotFoundException,
   Delete,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { SuperheroesService } from 'src/superheroes/superheroes.service';
@@ -21,9 +22,9 @@ export class SuperheroesController {
   constructor(private readonly superheroesService: SuperheroesService) {}
 
   @Get()
-  async findAll() {
+  async findAll(@Query('page') page: number = 1) {
     try {
-      const superheroes = await this.superheroesService.findAll();
+      const superheroes = await this.superheroesService.findAll(page);
 
       return superheroes;
     } catch (error) {
