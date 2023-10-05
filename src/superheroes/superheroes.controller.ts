@@ -76,10 +76,16 @@ export class SuperheroesController {
     @UploadedFiles() files: { images: Express.Multer.File[] },
   ) {
     try {
+      let imagesToUpdate: Express.Multer.File[] | null = null;
+
+      if (files.images && files.images.length > 0) {
+        imagesToUpdate = files.images;
+      }
+
       const updatedSuperhero = await this.superheroesService.update(
         Number(id),
         superheroData,
-        files.images,
+        imagesToUpdate,
       );
 
       if (!updatedSuperhero) {
