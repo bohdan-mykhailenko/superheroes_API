@@ -13,9 +13,21 @@ export class SuperheroesService {
     private readonly superheroModel: typeof Superhero,
   ) {}
 
-  async findAll(): Promise<Superhero[]> {
+  async findAll(
+    page: number,
+  ): Promise<{ superheroes: Superhero[]; totalSuperheroes: number }> {
     try {
-      return this.superheroModel.findAll();
+      const itemsPerPage = 5;
+      const offset = (page - 1) * itemsPerPage;
+
+      const { rows: superheroes, count: totalSuperheroes } =
+        await this.superheroModel.findAndCountAll({
+          offset,
+          limit: itemsPerPage,
+          order: [['id', 'ASC']],
+        });
+
+      return { superheroes, totalSuperheroes };
     } catch (error) {
       throw new NotFoundException('Failed to retrieve superheroes');
     }
